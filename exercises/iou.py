@@ -38,4 +38,28 @@ def calculate_iou(box1, box2):
     # 6. 计算并集面积 union_area = box1_area + box2_area - intersection_area。
     # 7. 计算 IoU = intersection_area / union_area。
     #    注意处理 union_area 为 0 的情况 (除零错误)。
-    pass 
+
+    box1 = np.array(box1)
+    box2 = np.array(box2)
+
+    if box2.ndim == 1:
+        box2 = box2.reshape(1, 4)
+
+    x_left = max(box1[0], box2[:, 0])
+    y_top = max(box1[1], box2[:, 1])
+    x_right = min(box1[2], box2[:, 2])
+    y_bottom = min(box1[3], box2[:, 3])
+
+    intersection_area = (x_right - x_left) * (y_bottom - y_top)
+    
+    box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    box2_area = (box2[:, 2] - box2[:, 0]) * (box2[:, 3] - box2[:, 1])
+    
+    union_area = box1_area + box2_area - intersection_area
+
+    if union_area == 0:
+        return 0
+
+    iou = intersection_area / union_area
+    
+    return  float(np.clip(iou, 0.0, 1.0))
