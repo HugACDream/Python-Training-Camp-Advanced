@@ -42,13 +42,13 @@ def contour_detection(image_path):
 
         contours, hierarchy = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        contours_lst = [cnt for cnt in contours]
+        contours_list = [cnt for cnt in contours]
         
         img_with_contours = img.copy()
 
         cv2.drawContours(img_with_contours, contours, -1, (0, 255, 0), 2)
 
-        return img_with_contours, contours_lst
+        return img_with_contours, contours_list
 
     except Exception as e:
         return None, None
